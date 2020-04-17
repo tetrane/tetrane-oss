@@ -1,0 +1,21 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+stages:
+    - build
+
+build:linux:
+  image: debian:stretch-slim
+  stage: build
+  interruptible: true
+  script:
+    - env
+    - apt-get update -qq && apt-get install -y -qq lsb-release build-essential ninja-build cmake
+    - ./DEPENDENCIES_DEV.sh
+    - mkdir build
+    - cd build
+    - cmake -G Ninja ..
+    - ninja
+  artifacts:
+      paths:
+          - build/output

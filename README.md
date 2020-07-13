@@ -8,9 +8,9 @@ This repository uses submodules to provide a dependency aware build and keep tra
 
 ### Common
 
-Tetrane libraries used by PANDA plugins and bochs to generate execution traces for REVEN.
+Tetrane libraries used by PANDA plugins and Bochs to generate execution traces for REVEN.
 
-### Panda
+### PANDA
 
 Forked from https://github.com/panda-re/panda
 
@@ -64,4 +64,5 @@ Build artifacts are produced in the `output/` directory.
 - Bochs is licensed under the GNU LGPL
 - PANDA is licensed under the GPLv2
 - virtualbox is licenced under the GPLv2
-- common/ modules are licensed under either of GPLv2 or MIT X11 license at your option
+- common/ modules are licensed under either of GPLv2 or MIT X11 derived 
+Tetrane's license at your option

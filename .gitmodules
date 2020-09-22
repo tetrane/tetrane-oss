@@ -1,48 +1,48 @@
 [submodule "panda"]
 	path = panda
 	url = ../panda.git
-	branch = tetrane-patches-2.4
+	branch = tetrane-patches-2.5
 [submodule "common/rvnbinresource"]
 	path = common/rvnbinresource
 	url = ../rvnbinresource.git
-	branch = tetrane-2.4
+	branch = tetrane-2.5
 [submodule "common/rvnbintrace"]
 	path = common/rvnbintrace
 	url = ../rvnbintrace.git
-	branch = tetrane-2.4
+	branch = tetrane-2.5
 [submodule "common/rvnjsonresource"]
 	path = common/rvnjsonresource
 	url = ../rvnjsonresource.git
-	branch = tetrane-2.4
+	branch = tetrane-2.5
 [submodule "common/rvnmemhistwriter"]
 	path = common/rvnmemhistwriter
 	url = ../rvnmemhistwriter.git
-	branch = tetrane-2.4
+	branch = tetrane-2.5
 [submodule "common/rvnmetadata"]
 	path = common/rvnmetadata
 	url = ../rvnmetadata.git
-	branch = tetrane-2.4
+	branch = tetrane-2.5
 [submodule "common/rvnsqlite"]
 	path = common/rvnsqlite
 	url = ../rvnsqlite.git
-	branch = tetrane-2.4
+	branch = tetrane-2.5
 [submodule "virtualbox"]
 	path = virtualbox
 	url = ../virtualbox.git
-	branch = tetrane-patches-2.4
+	branch = tetrane-patches-2.5
 [submodule "reven-panda-plugins"]
 	path = reven-panda-plugins
 	url = ../reven-panda-plugins.git
-	branch = tetrane-2.4
+	branch = tetrane-2.5
 [submodule "bochs"]
 	path = bochs
 	url = ../bochs.git
-	branch = tetrane-patches-2.4
+	branch = tetrane-patches-2.5
 [submodule "common/rvncorevirtualbox"]
 	path = common/rvncorevirtualbox
 	url = ../rvncorevirtualbox.git
-	branch = tetrane-2.4
+	branch = tetrane-2.5
 [submodule "common/rvnsyncpoint"]
 	path = common/rvnsyncpoint
 	url = ../rvnsyncpoint.git
-	branch = tetrane-2.4
+	branch = tetrane-2.5

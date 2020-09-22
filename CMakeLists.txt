@@ -377,6 +377,52 @@ add_dependencies(clean-rvncorevirtualbox clean-rvncorevirtualbox-build)
 
 add_dependencies(clean-submodules clean-rvncorevirtualbox)
 
+################################################################ rvnvmicomm
+
+# Build the submodule
+ExternalProject_Add(rvnvmicomm
+    PREFIX ${CMAKE_BINARY_DIR}/common/rvnvmicomm
+    STAMP_DIR ${STAMPS_DIR}
+    SOURCE_DIR ${CMAKE_SOURCE_DIR}/common/rvnvmicomm
+    INSTALL_DIR ${OUTPUT_DIR}
+    BUILD_ALWAYS ${BUILD_ALWAYS}
+
+    CMAKE_ARGS
+        -DCMAKE_C_COMPILER_LAUNCHER=${CMAKE_C_COMPILER_LAUNCHER}
+        -DCMAKE_CXX_COMPILER_LAUNCHER=${CMAKE_CXX_COMPILER_LAUNCHER}
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${OUTPUT_DIR}
+        -DREVEN_TEST_DATA=${REVEN_TEST_DATA}
+    CMAKE_CACHE_ARGS "-DCMAKE_C_COMPILER:STRING=${REVEN_C_COMPILER}" "-DCMAKE_CXX_COMPILER:STRING=${REVEN_CXX_COMPILER}"
+
+    TEST_EXCLUDE_FROM_MAIN 1
+)
+add_dependencies(common rvnvmicomm)
+
+ExternalProject_Get_Property(rvnvmicomm BINARY_DIR)
+set(RVNVMICOMM_BINARY_DIR ${BINARY_DIR})
+
+# Test the submodule
+ExternalProject_Add_StepTargets(rvnvmicomm NO_DEPENDS test)
+add_dependencies(tests rvnvmicomm-test)
+
+# Clean the submodule
+add_custom_target(clean-rvnvmicomm)
+
+add_custom_target(clean-rvnvmicomm-stamps
+    COMMAND ${CMAKE_COMMAND} -E remove ${STAMPS_DIR}/rvnvmicomm-*
+    COMMENT "Deleting rvnvmicomm stamps"
+)
+add_dependencies(clean-rvnvmicomm clean-rvnvmicomm-stamps)
+
+add_custom_target(clean-rvnvmicomm-build
+    COMMAND ${CMAKE_COMMAND} --build ${RVNVMICOMM_BINARY_DIR} --target clean
+    COMMENT "Make clean in rvnvmicomm"
+)
+add_dependencies(clean-rvnvmicomm clean-rvnvmicomm-build)
+
+add_dependencies(clean-submodules clean-rvnvmicomm)
+
 #########
 # Panda #
 #########
@@ -384,7 +430,7 @@ add_dependencies(clean-submodules clean-rvncorevirtualbox)
 if(BUILD_PANDA)
     # Build the submodule
     ExternalProject_Add(panda
-        DEPENDS rvnbintrace rvnmemhistwriter
+        DEPENDS rvnbintrace rvnmemhistwriter rvnvmicomm
         PREFIX ${CMAKE_BINARY_DIR}/panda
         STAMP_DIR ${STAMPS_DIR}
         SOURCE_DIR ${CMAKE_SOURCE_DIR}/panda

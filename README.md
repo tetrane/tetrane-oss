@@ -37,21 +37,23 @@ Depends on common/rvn* libs.
 
 ## Build
 
-Build is only supported for Debian Stretch.
+Build is only supported for Debian Buster.
 
 One can use the `.gitlab-ci.yml` file as a reference for building.
 
 Common dependencies:
 
-- lsb-release # used by DEPENDENCIES_DEV.sh scripts
+- python3 # used by installer.py to install build dependencies
 - build-essential
 - cmake
 - ninja-build
 
-More dependencies are installed by the `DEPENDENCIES_DEV.sh` scripts while building.
+More dependencies are installed by the `installer.py` script.
 
 ```
-apt install lsb-release build-essential cmake ninja-build
+apt install build-essential cmake ninja-build python3 wget
+wget https://github.com/tetrane/dependencies_installer/raw/master/installer.py
+python3 installer.py .
 mkdir build && cd build
 cmake -G Ninja ..
 ninja

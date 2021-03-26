@@ -2,18 +2,19 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
-    - build
+  - build
 
 build:linux:
-  image: debian:stretch-slim
+  image: debian:buster-slim
   stage: build
   interruptible: true
   script:
     - env
-    - apt-get update -qq && apt-get install -y -qq lsb-release build-essential ninja-build cmake
-    - ./DEPENDENCIES_DEV.sh
+    - apt-get update -qq && apt-get install -y -qq build-essential ninja-build cmake wget python3
     - mkdir build
     - cd build
+    - wget https://github.com/tetrane/dependencies_installer/raw/master/installer.py
+    - python3 installer.py $(find ../ -wholename "*dependencies/dev")
     - cmake -G Ninja ..
     - ninja
   artifacts:

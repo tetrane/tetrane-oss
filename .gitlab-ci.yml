@@ -17,6 +17,7 @@ build:linux:
     - python3 installer.py $(find ../ -wholename "*dependencies/dev")
     - cmake -G Ninja ..
     - ninja
+    - ninja tests
   artifacts:
       paths:
           - build/output

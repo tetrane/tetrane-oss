@@ -257,6 +257,52 @@ add_dependencies(clean-rvnbintrace clean-rvnbintrace-build)
 
 add_dependencies(clean-submodules clean-rvnbintrace)
 
+################################################################ rvnblock
+
+# Build the submodule
+ExternalProject_Add(rvnblock
+    DEPENDS rvnmetadata rvnsqlite
+    PREFIX ${CMAKE_BINARY_DIR}/common/rvnblock
+    STAMP_DIR ${STAMPS_DIR}
+    SOURCE_DIR ${CMAKE_SOURCE_DIR}/common/rvnblock
+    INSTALL_DIR ${OUTPUT_DIR}
+    BUILD_ALWAYS ${BUILD_ALWAYS}
+
+    CMAKE_ARGS
+        -DCMAKE_C_COMPILER_LAUNCHER=${CMAKE_C_COMPILER_LAUNCHER}
+        -DCMAKE_CXX_COMPILER_LAUNCHER=${CMAKE_CXX_COMPILER_LAUNCHER}
+        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DCMAKE_INSTALL_PREFIX=${OUTPUT_DIR}
+    CMAKE_CACHE_ARGS "-DCMAKE_C_COMPILER:STRING=${REVEN_C_COMPILER}" "-DCMAKE_CXX_COMPILER:STRING=${REVEN_CXX_COMPILER}"
+
+    TEST_EXCLUDE_FROM_MAIN 1
+)
+add_dependencies(common rvnblock)
+
+ExternalProject_Get_Property(rvnblock BINARY_DIR)
+set(RVNBLOCK_BINARY_DIR ${BINARY_DIR})
+
+# Test the submodule
+ExternalProject_Add_StepTargets(rvnblock NO_DEPENDS test)
+add_dependencies(tests rvnblock-test)
+
+# Clean the submodule
+add_custom_target(clean-rvnblock)
+
+add_custom_target(clean-rvnblock-stamps
+    COMMAND ${CMAKE_COMMAND} -E remove ${STAMPS_DIR}/rvnblock-*
+    COMMENT "Deleting rvnblock stamps"
+)
+add_dependencies(clean-rvnblock clean-rvnblock-stamps)
+
+add_custom_target(clean-rvnblock-build
+    COMMAND ${CMAKE_COMMAND} --build ${RVNBLOCK_BINARY_DIR} --target clean
+    COMMENT "Make clean in rvnblock"
+)
+add_dependencies(clean-rvnblock clean-rvnblock-build)
+
+add_dependencies(clean-submodules clean-rvnblock)
+
 ################################################################ rvnmemhistwriter
 
 # Build the submodule
@@ -430,7 +476,7 @@ add_dependencies(clean-submodules clean-rvnvmicomm)
 if(BUILD_PANDA)
     # Build the submodule
     ExternalProject_Add(panda
-        DEPENDS rvnbintrace rvnmemhistwriter rvnvmicomm
+        DEPENDS rvnbintrace rvnblock rvnmemhistwriter rvnvmicomm
         PREFIX ${CMAKE_BINARY_DIR}/panda
         STAMP_DIR ${STAMPS_DIR}
         SOURCE_DIR ${CMAKE_SOURCE_DIR}/panda
@@ -464,6 +510,7 @@ if(BUILD_PANDA)
             x86_64-softmmu/panda/plugins/panda_reven_memory_history.so
             x86_64-softmmu/panda/plugins/panda_reven_tracer_bin.so
             x86_64-softmmu/panda/plugins/panda_reven_metadata.so
+            x86_64-softmmu/panda/plugins/panda_reven_blocks.so
             ${OUTPUT_DIR}/share/panda/plugins/
         WORKING_DIRECTORY <BINARY_DIR>
         DEPENDEES build

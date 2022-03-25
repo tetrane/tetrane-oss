@@ -521,6 +521,7 @@ if(BUILD_PANDA)
             <SOURCE_DIR>/configure
                 --disable-vhost-net
                 --disable-strip
+                --enable-libusb
                 --target-list=x86_64-softmmu
                 --prefix=${OUTPUT_DIR}
                 --cc=${CMAKE_C_COMPILER}

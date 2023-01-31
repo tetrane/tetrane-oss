@@ -26,10 +26,6 @@
 	path = common/rvnsqlite
 	url = ../rvnsqlite.git
 	branch = tetrane-2.11
-[submodule "virtualbox"]
-	path = virtualbox
-	url = ../virtualbox.git
-	branch = tetrane-patches-2.11
 [submodule "reven-panda-plugins"]
 	path = reven-panda-plugins
 	url = ../reven-panda-plugins.git

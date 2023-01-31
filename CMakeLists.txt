@@ -29,11 +29,9 @@ file(MAKE_DIRECTORY "${PKG_DIR}")
 
 option(BUILD_PANDA "Enable the build of PANDA" ON)
 option(BUILD_BOCHS "Enable the build of BOCHS" ON)
-option(BUILD_VIRTUALBOX "Enable the build of VIRTUALBOX" ON)
 
 message("BUILD_PANDA: ${BUILD_PANDA}")
 message("BUILD_BOCHS: ${BUILD_BOCHS}")
-message("BUILD_VIRTUALBOX: ${BUILD_VIRTUALBOX}")
 
 if (CMAKE_GENERATOR MATCHES "Makefiles")
     set(make_command "$(MAKE)")
@@ -647,63 +645,4 @@ if(BUILD_BOCHS)
     add_dependencies(clean-bochs clean-bochs-build)
 
     add_dependencies(clean-submodules clean-bochs)
-endif()
-
-##############
-# Virtualbox #
-##############
-
-if(BUILD_VIRTUALBOX)
-    # Build the submodule
-    ExternalProject_Add(virtualbox
-        PREFIX ${CMAKE_BINARY_DIR}/virtualbox
-        STAMP_DIR ${STAMPS_DIR}
-        SOURCE_DIR ${CMAKE_SOURCE_DIR}/virtualbox
-        INSTALL_DIR ${OUTPUT_DIR}
-        BUILD_ALWAYS ${BUILD_ALWAYS}
-
-        # This command is also creating a stamp in <BINARY_DIR>/debian/configure-stamp
-        CONFIGURE_COMMAND export PKGDIR=${PKG_DIR} &&
-                          export VNC=1 &&
-                          fakeroot <SOURCE_DIR>/src/VBox/Installer/linux/debian/rules configure
-
-        # This command is also creating a stamp in <BINARY_DIR>/debian/build-stamp
-        BUILD_COMMAND export PKGDIR=${PKG_DIR} &&
-                      export VNC=1 &&
-                      fakeroot <SOURCE_DIR>/src/VBox/Installer/linux/debian/rules build
-
-        INSTALL_COMMAND export PKGDIR=${PKG_DIR} &&
-                        export VNC=1 &&
-                        fakeroot <SOURCE_DIR>/src/VBox/Installer/linux/debian/rules binary
-    )
-    add_dependencies(universe virtualbox)
-
-    ExternalProject_Get_Property(virtualbox BINARY_DIR)
-    set(VIRTUALBOX_BINARY_DIR ${BINARY_DIR})
-
-    ExternalProject_Get_Property(virtualbox SOURCE_DIR)
-    set(VIRTUALBOX_SOURCE_DIR ${SOURCE_DIR})
-
-    # virtualbox doesn't have tests
-
-    # Clean the submodule
-    add_custom_target(clean-virtualbox)
-
-    add_custom_target(clean-virtualbox-stamps
-        COMMAND ${CMAKE_COMMAND} -E remove ${STAMPS_DIR}/virtualbox-*
-        COMMENT "Deleting virtualbox stamps"
-    )
-    add_dependencies(clean-virtualbox clean-virtualbox-stamps)
-
-    add_custom_target(clean-virtualbox-build
-        COMMAND export PKGDIR=${PKG_DIR} &&
-                export VNC=1 &&
-                fakeroot ${VIRTUALBOX_SOURCE_DIR}/src/VBox/Installer/linux/debian/rules clean
-
-        WORKING_DIRECTORY ${VIRTUALBOX_BINARY_DIR}
-        COMMENT "Make clean in virtualbox"
-    )
-    add_dependencies(clean-virtualbox clean-virtualbox-build)
-
-    add_dependencies(clean-submodules clean-virtualbox)
 endif()

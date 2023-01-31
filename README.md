@@ -21,6 +21,8 @@ Modified replay callbacks to enable plugins to generate a REVEN-compatible trace
 
 ### VirtualBox
 
+**Note:** The VirtualBox recorder is deprecated and is not shipped anymore since esReven 2023.01.
+
 Forked from https://www.virtualbox.org/
 
 Modified to record a trace composed of the initial state and hardware events.
@@ -66,5 +68,4 @@ Build artifacts are produced in the `output/` directory.
 - Bochs is licensed under the GNU LGPL
 - PANDA is licensed under the GPLv2
 - virtualbox is licenced under the GPLv2
-- common/ modules are licensed under either of GPLv2 or MIT X11 derived 
-Tetrane's license at your option
+- common/ modules are licensed under either of GPLv2 or MIT X11 derived Tetrane's license at your option
